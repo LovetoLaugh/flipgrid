@@ -51,6 +51,7 @@ function App() {
                     onChange={e => {
                       setFirstName(e.target.value);
                       setValidatedFirstName(e.target.value.length > 0 && FIRSTNAME_REGEX.test(e.target.value));
+                      setLengthFirstName(firstName.length > 0);
                     }}
                     onBlur={e=>setValidatedFirstName(e.target.value.length > 0 && FIRSTNAME_REGEX.test(e.target.value))}
                   />
@@ -67,7 +68,8 @@ function App() {
                     value={email}
                     onChange={e => {
                       setEmail(e.target.value);
-                      setValidatedEmail(e.target.value.length > 0 && EMAIL_REGEX.test(e.target.value))
+                      setValidatedEmail(e.target.value.length > 0 && EMAIL_REGEX.test(e.target.value));
+                      setLengthEmail(email.length > 0);
                     }}
                     onBlur={(e)=> setValidatedEmail(e.target.value.length > 0 && EMAIL_REGEX.test(e.target.value))}
                   />
