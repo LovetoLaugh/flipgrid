@@ -5,14 +5,14 @@
 .loginArea {
   width: 100vw;
   height: 100vh;
-  background-color: gray;
+  background-color: lightgrey;
 }
 
 .loginCard {
   width:500px;
   height:500px;
   margin:0 auto;
-  background:#f7f7f7;
+  background: #FEFEFE;
   position:absolute;
   left:50%;
   top:50%;
@@ -25,7 +25,7 @@
   width:500px;
   height:250px;
   margin:0 auto;
-  background:#f7f7f7;
+  background: #FEFEFE;
   position:absolute;
   left:50%;
   top:50%;
@@ -80,6 +80,8 @@
   width: 400px;
   height: 30px;
   border-radius: 5px;
+  border-width: 1px;
+  border-color: lightgrey;
 }
 
 .submitLabel {
@@ -93,5 +95,7 @@
   height: 40px;
   border-radius: 5px;
   color: #ffffff;
-  background-color: orangered;
+  background-color:orangered;
+  border-width: 0px;
+  font-size: 17px
 }

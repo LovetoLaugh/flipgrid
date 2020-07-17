@@ -7,8 +7,12 @@ function App() {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [validatedFirstName, setValidatedFirstName] = useState(false);
+  const [validatedEmail, setValidatedEmail] = useState(false);
+  const [validatedPassword, setValidatedPassword] = useState(false);
   const validateForm = () => {
-    const validatedFirstName = firstName.length > 0;
+    const firstNameRegex = RegExp("^[A-Za-z ,.'-]+$");
+    const validatedFirstName = firstName.length > 0 && firstNameRegex.test(firstName);
     const validatedEmail = email.length > 0;
     const validatedPassword = password.length > 0;
     return validatedFirstName && validatedEmail && validatedPassword;
@@ -33,48 +37,48 @@ function App() {
           </div>
           <div>
             <form>
-              <FormGroup controlId="firstName" bsSize="large">
                 <div className="nameLabel">
                   <label><b>First Name</b></label><br />
                 </div>
                 <div className="field">
-                  <FormControl
+                  <input
                     autoFocus
                     type="firstName"
                     className="inputField"
                     value={firstName}
                     onChange={e => setFirstName(e.target.value)}
+                    onBlur={e=>setValidatedFirstName(validatedFirstName)}
                   />
+                  {validatedFirstName && <label className="errorLabel">* Please enter valid FirstName</label>}
                 </div>
-              </FormGroup>
-              <FormGroup controlId="emailAddress" bsSize="large">
                 <div className="nameLabel">
                   <label><b>Email</b></label><br />
                 </div>
                 <div className="field">
-                  <FormControl
+                  <input
                     autoFocus
                     type="email"
                     className="inputField"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
+                    onBlur={(e)=> setValidatedEmail(validatedEmail)}
                   />
+                  {validatedEmail && <label className="errorLabel">* Please enter valid Email</label>}
                 </div>
-              </FormGroup>
-              <FormGroup controlId="password" bsSize="large">
                 <div className="nameLabel">
                   <label><b>Password</b></label><br />
                 </div> 
                 <div className="field"> 
-                  <FormControl
+                  <input
                     autoFocus
                     type="password"
                     className="inputField"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
+                    onBlur={e=>setValidatedPassword(validatedPassword)}
                   />
-                </div>  
-              </FormGroup>
+                  {validatedPassword && <label className="errorLabel">* Please enter valid Password</label>}
+                </div> 
               <div className="submitLabel">
                 <Button block bsSize="large" type="submit" disabled={!validateForm()} className="submitButton" onClick={handleSubmit}>
                   Sign Up
