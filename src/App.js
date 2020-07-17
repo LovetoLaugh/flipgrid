@@ -7,12 +7,13 @@ function App() {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [validatedFirstName, setValidatedFirstName] = useState(false);
-  const [validatedEmail, setValidatedEmail] = useState(false);
-  const [validatedPassword, setValidatedPassword] = useState(false);
+  const [validatedFirstName, setValidatedFirstName] = useState();
+  const [validatedEmail, setValidatedEmail] = useState();
+  const [validatedPassword, setValidatedPassword] = useState();
+  const FIRSTNAME_REGEX = /^[A-Za-z ,.'-]+$/;
+  const EMAIL_REGEX = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   const validateForm = () => {
-    const firstNameRegex = RegExp("^[A-Za-z ,.'-]+$");
-    const validatedFirstName = firstName.length > 0 && firstNameRegex.test(firstName);
+    const validatedFirstName = firstName.length > 0 && /^[A-Za-z ,.'-]+$/.test(firstName);
     const validatedEmail = email.length > 0;
     const validatedPassword = password.length > 0;
     return validatedFirstName && validatedEmail && validatedPassword;
@@ -47,9 +48,9 @@ function App() {
                     className="inputField"
                     value={firstName}
                     onChange={e => setFirstName(e.target.value)}
-                    onBlur={e=>setValidatedFirstName(validatedFirstName)}
+                    onBlur={e=>setValidatedFirstName(firstName.length > 0 && FIRSTNAME_REGEX.test(firstName))}
                   />
-                  {validatedFirstName && <label className="errorLabel">* Please enter valid FirstName</label>}
+                  {!validatedFirstName && firstName.length > 0 && <label className="errorLabel">* Please enter valid FirstName</label>}
                 </div>
                 <div className="nameLabel">
                   <label><b>Email</b></label><br />
@@ -61,9 +62,9 @@ function App() {
                     className="inputField"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    onBlur={(e)=> setValidatedEmail(validatedEmail)}
+                    onBlur={(e)=> setValidatedEmail(email.length > 0 && EMAIL_REGEX.test(email))}
                   />
-                  {validatedEmail && <label className="errorLabel">* Please enter valid Email</label>}
+                  {!validatedEmail && email.length > 0 && <label className="errorLabel">* Please enter valid Email</label>}
                 </div>
                 <div className="nameLabel">
                   <label><b>Password</b></label><br />
@@ -75,9 +76,9 @@ function App() {
                     className="inputField"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    onBlur={e=>setValidatedPassword(validatedPassword)}
+                    onBlur={e=>setValidatedPassword(password.length > 0)}
                   />
-                  {validatedPassword && <label className="errorLabel">* Please enter valid Password</label>}
+                  {!validatedPassword && <label className="errorLabel">* Please enter valid Password</label>}
                 </div> 
               <div className="submitLabel">
                 <Button block bsSize="large" type="submit" disabled={!validateForm()} className="submitButton" onClick={handleSubmit}>

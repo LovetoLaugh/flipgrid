@@ -99,3 +99,8 @@
   border-width: 0px;
   font-size: 17px
 }
+
+.errorLabel {
+  display: block;
+  color:red;
+}
