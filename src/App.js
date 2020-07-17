@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Button, FormGroup, FormControl } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import './App.css';
 
 function App() {
@@ -10,17 +10,19 @@ function App() {
   const [validatedFirstName, setValidatedFirstName] = useState();
   const [validatedEmail, setValidatedEmail] = useState();
   const [validatedPassword, setValidatedPassword] = useState();
+  const [lengthFirstName, setLengthFirstName] = useState();
+  const [lengthEmail, setLengthEmail] = useState();
+  const [lengthPassword, setLengthPassword] = useState();
   const FIRSTNAME_REGEX = /^[A-Za-z ,.'-]+$/;
   const EMAIL_REGEX = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-  const validateForm = () => {
-    const validatedFirstName = firstName.length > 0 && /^[A-Za-z ,.'-]+$/.test(firstName);
-    const validatedEmail = email.length > 0;
-    const validatedPassword = password.length > 0;
-    return validatedFirstName && validatedEmail && validatedPassword;
-  }
   const handleSubmit = (event) => {
+    setLengthFirstName(firstName.length > 0);
+    setLengthEmail(email.length > 0);
+    setLengthPassword(password.length > 0);
     event.preventDefault();
-    setSignUp(false);
+    if((validatedFirstName && lengthFirstName) && (validatedEmail && lengthEmail) && lengthPassword){
+      setSignUp(false);
+    }
   }
 
   return (
@@ -43,51 +45,53 @@ function App() {
                 </div>
                 <div className="field">
                   <input
-                    autoFocus
                     type="firstName"
                     className="inputField"
                     value={firstName}
-                    onChange={e => setFirstName(e.target.value)}
-                    onBlur={e=>setValidatedFirstName(firstName.length > 0 && FIRSTNAME_REGEX.test(firstName))}
+                    onChange={e => {
+                      setFirstName(e.target.value);
+                      setValidatedFirstName(e.target.value.length > 0 && FIRSTNAME_REGEX.test(e.target.value));
+                    }}
+                    onBlur={e=>setValidatedFirstName(e.target.value.length > 0 && FIRSTNAME_REGEX.test(e.target.value))}
                   />
-                  {!validatedFirstName && firstName.length > 0 && <label className="errorLabel">* Please enter valid FirstName</label>}
+                  {!validatedFirstName && firstName.length > 0 && <label className="errorLabel">* Please enter valid First Name</label>}
+                  {lengthFirstName === false && firstName.length > 0 && <label className="errorLabel">* Please enter First Name</label>}
                 </div>
                 <div className="nameLabel">
                   <label><b>Email</b></label><br />
                 </div>
                 <div className="field">
                   <input
-                    autoFocus
                     type="email"
                     className="inputField"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    onBlur={(e)=> setValidatedEmail(email.length > 0 && EMAIL_REGEX.test(email))}
+                    onChange={e => {
+                      setEmail(e.target.value);
+                      setValidatedEmail(e.target.value.length > 0 && EMAIL_REGEX.test(e.target.value))
+                    }}
+                    onBlur={(e)=> setValidatedEmail(e.target.value.length > 0 && EMAIL_REGEX.test(e.target.value))}
                   />
                   {!validatedEmail && email.length > 0 && <label className="errorLabel">* Please enter valid Email</label>}
+                  {lengthEmail === false && email.length > 0 && <label className="errorLabel">* Please enter Email</label>}
                 </div>
                 <div className="nameLabel">
                   <label><b>Password</b></label><br />
                 </div> 
                 <div className="field"> 
                   <input
-                    autoFocus
                     type="password"
                     className="inputField"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    onBlur={e=>setValidatedPassword(password.length > 0)}
+                    onBlur={e=>setValidatedPassword(e.target.value.length > 0)}
                   />
-                  {!validatedPassword && <label className="errorLabel">* Please enter valid Password</label>}
+                  {validatedPassword === false && <label className="errorLabel">* Please enter valid Password</label>}
                 </div> 
               <div className="submitLabel">
-                <Button block bsSize="large" type="submit" disabled={!validateForm()} className="submitButton" onClick={handleSubmit}>
+                <Button block bsSize="large" type="submit" className="submitButton" onClick={handleSubmit}>
                   Sign Up
                 </Button>
               </div>
-              {/* <Button block bsSize="large" disabled={!validateForm()} type="submit">
-                Login
-              </Button> */}
             </form>
           </div>
         </div>}
