@@ -10,19 +10,17 @@ function App() {
   const [validatedFirstName, setValidatedFirstName] = useState();
   const [validatedEmail, setValidatedEmail] = useState();
   const [validatedPassword, setValidatedPassword] = useState();
-  const [lengthFirstName, setLengthFirstName] = useState();
-  const [lengthEmail, setLengthEmail] = useState();
-  const [lengthPassword, setLengthPassword] = useState();
   const FIRSTNAME_REGEX = /^[A-Za-z ,.'-]+$/;
   const EMAIL_REGEX = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   const handleSubmit = (event) => {
-    setLengthFirstName(firstName.length > 0);
-    setLengthEmail(email.length > 0);
-    setLengthPassword(password.length > 0);
     event.preventDefault();
-    if((validatedFirstName && lengthFirstName) && (validatedEmail && lengthEmail) && lengthPassword){
-      setSignUp(false);
-    }
+    setSignUp(false);
+  }
+  const validateForm = () => {
+    const validatedFirstName = firstName.length > 0;
+    const validatedEmail = email.length > 0;
+    const validatedPassword = password.length > 0;
+    return validatedFirstName && validatedEmail && validatedPassword;
   }
 
   return (
@@ -51,12 +49,10 @@ function App() {
                     onChange={e => {
                       setFirstName(e.target.value);
                       setValidatedFirstName(e.target.value.length > 0 && FIRSTNAME_REGEX.test(e.target.value));
-                      setLengthFirstName(firstName.length > 0);
                     }}
                     onBlur={e=>setValidatedFirstName(e.target.value.length > 0 && FIRSTNAME_REGEX.test(e.target.value))}
                   />
                   {!validatedFirstName && firstName.length > 0 && <label className="errorLabel">* Please enter valid First Name</label>}
-                  {lengthFirstName === false && firstName.length > 0 && <label className="errorLabel">* Please enter First Name</label>}
                 </div>
                 <div className="nameLabel">
                   <label><b>Email</b></label><br />
@@ -69,12 +65,10 @@ function App() {
                     onChange={e => {
                       setEmail(e.target.value);
                       setValidatedEmail(e.target.value.length > 0 && EMAIL_REGEX.test(e.target.value));
-                      setLengthEmail(email.length > 0);
                     }}
                     onBlur={(e)=> setValidatedEmail(e.target.value.length > 0 && EMAIL_REGEX.test(e.target.value))}
                   />
                   {!validatedEmail && email.length > 0 && <label className="errorLabel">* Please enter valid Email</label>}
-                  {lengthEmail === false && email.length > 0 && <label className="errorLabel">* Please enter Email</label>}
                 </div>
                 <div className="nameLabel">
                   <label><b>Password</b></label><br />
@@ -90,7 +84,7 @@ function App() {
                   {validatedPassword === false && <label className="errorLabel">* Please enter valid Password</label>}
                 </div> 
               <div className="submitLabel">
-                <Button block bsSize="large" type="submit" className="submitButton" onClick={handleSubmit}>
+                <Button block bsSize="large" type="submit" disabled={!validateForm()} className="submitButton" onClick={handleSubmit}>
                   Sign Up
                 </Button>
               </div>
